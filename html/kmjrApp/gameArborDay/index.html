@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="人人爱家金融">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" id="viewport">
+    <meta content="telephone=no" name="format-detection" />
+    <title>植树节--抢红包</title>
+    <style>
+        html,body,.ar-body{margin: 0; padding: 0; height: 100%; width: 100%; display: block; overflow: hidden; line-height: 1em; font-size: 1em}
+        p{ margin: 1em 0}
+        .lineheight-1_5{line-height: 1.5em}
+        .lineheight-2{line-height: 2em}
+        .text-normal{ color: #513001}
+        .text-max{ font-size: 28px}
+        .text-min{ font-size: 14px}
+        .text-stand{ font-size: 18px}
+        .text-rank{ font-size: 20px}
+        .text-white{color:white}
+        .text-red{color:#fc2d2d}
+        .fadeIn{ display:block}
+        .fadeOut{ display: none}
+        .text-center{ text-align: center}
+        .text-left{ text-align: left}
+        .text-nowarp{ white-space: nowrap}
+        .text-tips{ color:#feb021;}
+
+        .text-timer{ padding-top: 0; margin-top: .5em; margin-bottom: 0; padding-bottom: 1px; font-size:  24px;}
+
+        .padding-bottom-1em{padding-bottom: 1em}
+
+        .ar-header{width:100%; height: 20%; top: 9%;left: 0; z-index: 9; position: absolute; background:#7e7e7e url(../../../images/kmjrApp/gameArborDay/ar_bg-top.jpg) left top no-repeat; background-size: 100% 100%; overflow: hidden}
+        .header-cell-1{position: absolute; top: 1em; left: 1em; width: 30%; height: 100%;}
+        .ar-avatar,
+        .ar-avatar-dialog{width: 55%; border-radius: 9999px; background-color: #c4e0a0; border:3px solid white;}
+        .ar-avatar-dialog{ width: 25%;position: relative; z-index: 25;margin-top: 10%}
+        .ar-avatar-table{width:48px; height: 48px;border-radius: 999px; background-color:#c4e0a0 }
+        .ar-avatar-dialog.success{ border-color:#98c838 }
+        .ar-avatar-dialog.fail{ border-color:#b5b5b5; background-color: #d5d5d5 }
+        .ar-score{ font-size: 26px; position: relative; top:-.885em}
+        .header-cell-2{text-align: center}
+        .header-cell-3{position: absolute; top: 1em; right: 1em; width: 30%; height: 100%; text-align: right}
+        .ar-music-play,
+        .ar-music-pause{width:36px; height: 36px;background: url(../../../images/kmjrApp/gameArborDay/icon-music-play.png) left top no-repeat; background-size: 100% 100%; float: right}
+        .ar-music-play.ar-music-pause{ background-image: url(../../../images/kmjrApp/gameArborDay/icon-music-pause.png)}
+
+        .ar-content{text-align: center; height: 100%; width: 100%; position: relative;z-index: 8; overflow: hidden;background:#BCDF8B; background-size: 100%}
+        .container-scroll{width: 100%; height: 100%; left: 0; top: 0; position: absolute}
+        .container-scroll tabel,.container-scroll tr,.container-scroll td{}
+        .container-scroll td{ width: 25px;}
+
+        td.right{ background: url(../../../images/kmjrApp/gameArborDay/icon-hole.png) left top no-repeat; background-size: 100% 100%}
+        td.blank{}
+        td.flower{background: url(../../../images/kmjrApp/gameArborDay/icon-flower.png) left top no-repeat; background-size: 100% 100%}
+        td.grass{background: url(../../../images/kmjrApp/gameArborDay/icon-grass.png) left top no-repeat; background-size: 100% 100%}
+
+        .right{  position: relative; z-index: 1}
+        .fill-right:after{
+            content: '';
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            left: 0;
+            top: 0;
+            background: url(../../../images/kmjrApp/gameArborDay/icon-tree.png) left top no-repeat;
+            background-size: 100% 100%;
+            z-index: 2;
+        }
+        td.right.fill-error.fill-right:after{ background-image: none}
+        .fill-error,
+        td.flower.fill-error,
+        td.grass.fill-error,
+        td.right.fill-error{
+            background: url(../../../images/kmjrApp/gameArborDay/icon-error.png) left top no-repeat;
+            background-size: 100% 100%;
+        }
+        .fill-help:after{
+            content: '';
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            left: 0;
+            top: 0;
+            background: url(../../../images/kmjrApp/gameArborDay/icon-help.gif) left top no-repeat;
+            background-size: 100% 100%;
+            z-index: 3;
+        }
+        .fill-cover{position: absolute;z-index: 11; width: 100%; height: 100%; left: 0; top:0; background-color: transparent;}
+
+        .dialog{position:fixed; left: 0; top:0; width: 100%; height: 100%; z-index: 21}
+        .dialog-bg{ background-color: rgba(0,0,0,.85); position:fixed; left: 0; top:0; width: 100%; height: 100%; z-index: 22;}
+        .dialog-content{position: relative; z-index: 23;background-color: #c4e0a0; height: 100%}
+        .dialog-content-start{ position: relative}
+        .dialog-content.dialog-content-inline{ height: auto}
+        .dialog-content.transparent{ background-color: transparent}
+        .dialog-content img.img-bg{ display: block; width: 100%; }
+        .ar-avatar-table{}
+
+        .dialog-music-play{position: absolute; top: 2em; left: 1em; text-align: right;z-index: 24}
+        .dialog-rule{position: absolute; top:0; right: 0; text-align: right;z-index: 24}
+        .dialog-btn-start{position: absolute; bottom:8%; left: 20%; width: 60%; text-align: center;z-index: 24}
+        .dialog-rank,
+        .dialog-gift{position: absolute; bottom:30%; right: 1em;  text-align: center;z-index: 24; border:2px;border: 2px solid white; border-radius: 999px; padding: 8px; box-shadow:0 0 5px #97cf6d}
+        .dialog-gift{ bottom: 20%}
+        .dialog-rank img,
+        .dialog-gift img{ display: block;}
+        .dialog-ribbon{ margin-top: -3%; position: relative; z-index: 24}
+        .dialog-ribbon.fail{}
+
+
+        .dialog-btn,
+        .dialog-btn-narrow{color: #532e1a; padding:18px 12px; font-size: 18px;text-decoration: none; background-color:#ffb52d; border-radius: 5px; width:64%; display:block; margin: 10px  auto 0}
+        .dialog-btn-narrow{ width: 28%; display: inline-block}
+        .dialog-btn.green,
+        .dialog-btn-narrow.green{ background-color: #98c838}
+        .dialog-btn.yellow-line,
+        .dialog-btn-narrow.yellow-line{  background: linear-gradient(to bottom, #ffb52d 0%,#faa732 100%);border: 1px solid #e0880f}
+        .dialog-btn.gray-line,
+        .dialog-btn-narrow.gray-line{ background: linear-gradient(to bottom, #cccccc 0%,#d0d0d0 100%);border: 1px solid #999}
+
+        @media (max-height: 480px) {
+            .dialog-btn,
+            .dialog-btn-narrow {
+                padding: 12px 12px;
+            }
+        }
+
+        .btn-close{float: right; font-size: 34px}
+        .ar-rank-tit{ border-bottom: 2px solid white; margin-left:1em; margin-right: 1em;  line-height: 2em }
+        .ar-rank-table{ padding:.5em 1em; overflow-y: scroll;max-height: 78%;}
+        .ar-rank-table table{ width: 100%}
+        .ar-rank-table table tr td{ height: 70px;line-height: 70px;overflow: hidden;white-space: nowrap; text-overflow:ellipsis; max-width: 100px }
+        .ar-rank-table table tr td img{ vertical-align: middle}
+
+        .dialog-panel{ background-color: #fff;padding:1em 5%; width: 60%; margin: 3em auto 0; border-radius: 10px}
+
+        .img-sqr{ margin-bottom: 1em}
+
+        .dialog-panel-header{color:#532e1a; padding-bottom: 1em;}
+        .panel-ipt{ border: 0; border-radius: 5px;padding: 10px 12px;font-size: 18px;background-color: white;border-radius: 5px; width: 85%;}
+        .dialog-btn.panel-ipt-btn{ width: 85%; }
+        .dialog-panel.dialog-yellow{background-color: #fdf6e8; margin-top: 30%}
+
+        .rule-tit{color: #fff088;position: relative; margin-bottom: 1em}
+        .rule-tit:after{content: '';border-bottom:1px solid white; display: block; position: absolute; top:50%;left: 0; width:38%;z-index: 26 }
+        .rule-tit:before{content: '';border-bottom:1px solid white; display: block; position: absolute; top:50%;right: 0; width:38%;z-index: 26}
+        .rule-tit-txt{ position: relative;z-index: 27;font-size:18px; }
+        .rule-content{ padding: 1em 1em 1em 1em; max-height: 96%;overflow-y: scroll}
+        .rule-table table{ border-top:1px solid white;border-right:1px solid white;}
+        .rule-table table td{ border-left:1px solid white; border-bottom:1px solid white; line-height: 1.5em; padding-left:.5em }
+        .rule-copyright{ text-align: center; background-color: rgba(0,0,0,.2); font-size: 14px; padding: .5em 0; margin-right: -1em; margin-left: -1em; margin-bottom: 5em; color: #fff4aa}
+        .rule-up{ text-align: center; padding:.5em 0; background-color: rgba(0,0,0,.8); position: fixed; bottom: 0; width: 100%; z-index: 27; font-size: 34px}
+
+        .img-share-friend{ position: fixed; right: 5%; top:2% ; width: 20%}
+        .img-share-friend-wide{ position: fixed; right: 5%; top:2% ; width: 35%}
+        .img-download{ position: relative;z-index: 10; width: 100%}
+
+        .dialog-content.dialog-content-down{background-color: #fff}
+        .down-content{ text-align: center; position: relative}
+        .down-content img{display: block;width: 100%}
+        .down-content img.btn-down{ width: 50%; padding-top:2%; margin: 0 auto}
+        .down-content .close{ position: absolute; right: 5%; top:3%; font-size: 34px;color: white}
+    </style>
+    <script src="../../../lib/require.min.js"></script>
+    <script src="../../../javascripts/webApp/kmjr.app.config.js"></script>
+</head>
+<body>
+
+<!--开始游戏-->
+<div class="dialog" data-dialog="startPlayGame">
+    <div class="dialog-bg"></div>
+    <div class="dialog-content">
+        <div class="dialog-content-start">
+            <img src="../../../images/kmjrApp/gameArborDay/ar-start_01.png" id="img-hh" class="img-bg">
+            <img src="../../../images/kmjrApp/gameArborDay/ar-start_02.png" class="img-bg">
+            <img src="../../../images/kmjrApp/gameArborDay/ar-start_03.png" class="img-bg">
+            <img src="../../../images/kmjrApp/gameArborDay/ar-start_04.png" class="img-bg">
+            <img src="../../../images/kmjrApp/gameArborDay/ar-start_05.png" class="img-bg">
+            <img src="../../../images/kmjrApp/gameArborDay/ar-start_06.png" class="img-bg">
+            <img src="../../../images/kmjrApp/gameArborDay/ar-start_07.jpg" class="img-bg">
+            <div class="dialog-btn-start">
+                <img src="../../../images/kmjrApp/gameArborDay/btn-play-start.png"  data-btn="startPlayGame" data-hide-name="startPlayGame" width="100%">
+            </div>
+        </div>
+
+        <div class="dialog-music-play">
+            <div class="ar-music-play" data-btn="play-music-bg"></div>
+        </div>
+        <div class="dialog-rule">
+            <img src="../../../images/kmjrApp/gameArborDay/icon-activity-rule.png" data-btn="showDialog" data-show-name="rule" width="60%">
+        </div>
+
+        <div class="dialog-rank">
+            <img src="../../../images/kmjrApp/gameArborDay/icon-rank.png" width="20" data-btn="showDialog" data-show-name="rank" >
+        </div>
+        <div class="dialog-gift">
+            <img src="../../../images/kmjrApp/gameArborDay/icon-gift.png" width="20" data-btn="showDialog" data-show-name="gift" >
+        </div>
+    </div>
+</div>
+
+<div class="ar-body">
+    <a href="#"> <img src="../../../images/kmjrApp/gameArborDay/lt2016-download.png" class="img-download"></a>
+    <div class="ar-header">
+        <div class="header-cell-1">
+            <img src="../../../images/kmjrApp/gameArborDay/icon-flower.png" class="ar-avatar">
+            <span class="ar-score text-normal" data-count="score" data-count-bast="0">00</span>
+        </div>
+        <div class="header-cell-2">
+            <p class="text-normal">时间</p>
+            <p data-count="countDown" class="text-timer">00.00</p>
+        </div>
+        <div  class="header-cell-3">
+            <div class="ar-music-play" data-btn="play-music-bg"></div>
+        </div>
+    </div>
+    <div class="ar-content" style="" id="container-track">
+        <div class="container-scroll" id="container-scroll">
+            <table width="100%"  id="container-track-table" cellpadding="0" cellspacing="0"></table>
+        </div>
+        <div class="fill-cover"></div>
+    </div>
+</div>
+
+
+
+<!--挑战成功-->
+<div class="dialog fadeOut" data-dialog="dekaronSuccess">
+    <div class="dialog-bg"></div>
+    <div class="dialog-content transparent text-center text-white">
+        <img src="../../../images/kmjrApp/gameArborDay/icon-flower.png" class="ar-avatar-dialog success">
+        <img src="../../../images/kmjrApp/gameArborDay/ar-ribbon-suc.png" width="75%" class="dialog-ribbon success">
+        <p class="lineheight-1_5">
+            您的成绩为:<span class="text-red" data-score="success">0</span>分
+            <br>
+            成功击败全国99%的玩家
+        </p>
+        <p class="lineheight-1_5">
+            最佳成绩为:<span data-bast="score">0</span>分
+            <br>
+            最佳排名为:No.6
+        </p>
+        <p>
+            <div><a href="javascript:;" class="dialog-btn" data-btn="startPlayGame" data-hide-name="dekaronSuccess">继续刷记录</a></div>
+            <div><a href="javascript:;" class="dialog-btn green">提交成绩(仅限一次)</a></div>
+            <div>
+                <a href="javascript:;" class="dialog-btn-narrow green" data-btn="showDialog" data-show-name="rank">排行榜</a>
+                <a href="javascript:;" class="dialog-btn-narrow green" data-btn="showDialog" data-show-name="sqr">关注我们</a>
+            </div>
+    </div>
+</div>
+
+
+<!--挑战失败-->
+<div class="dialog fadeOut" data-dialog="dekaronFail">
+    <div class="dialog-bg"></div>
+    <div class="dialog-content transparent text-center text-white">
+        <img src="../../../images/kmjrApp/gameArborDay/icon-open-friend.png" class="img-share-friend">
+
+        <img src="../../../images/kmjrApp/gameArborDay/icon-flower.png" class="ar-avatar-dialog fail">
+        <img src="../../../images/kmjrApp/gameArborDay/ar-ribbon-fail.png" width="75%" class="dialog-ribbon fail">
+        <p class="lineheight-1_5">
+            您的成绩为:<span class="text-red"  data-score="fail">20</span>分
+            <br>
+            成绩必须达到10分才能领取奖励
+        </p>
+        <p class="lineheight-1_5">
+            最佳成绩为:<span data-bast="score">52</span>分
+            <br>
+            最佳排名为:No.6
+        </p>
+        <p>
+        <div><a href="#" class="dialog-btn" data-btn="startPlayGame" data-hide-name="dekaronFail">再玩一次</a></div>
+        <div>
+            <a href="#" class="dialog-btn-narrow green" data-btn="showDialog" data-show-name="rank">排行榜</a>
+            <a href="#" class="dialog-btn-narrow green" data-btn="showDialog" data-show-name="sqr">关注我们</a>
+        </div>
+    </div>
+</div>
+
+<!--排行榜-->
+<div class="dialog fadeOut" data-dialog="rank">
+    <div class="dialog-bg"></div>
+    <div class="dialog-content transparent text-center text-white">
+        <div class="text-max ar-rank-tit">排行榜<span class="btn-close" data-btn="hideDialog" data-hide-name="rank" >×</span></div>
+        <div class="lineheight-2">目前排名：6（只显示前100名）</div>
+        <div class="ar-rank-table">
+            <table cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                    <th width="20%">排行</th>
+                    <th width="20%">头像</th>
+                    <th width="45%">昵称</th>
+                    <th width="15%">得分</th>
+                </tr>
+                <tr>
+                    <td><img src="../../../images/kmjrApp/gameArborDay/icon-rank-1.png" width="48"> </td>
+                    <td><img src="../../../images/kmjrApp/gameArborDay/icon-flower.png" class="ar-avatar-table"> </td>
+                    <td>比克大魔王</td>
+                    <td>50</td>
+                </tr>
+                <tr>
+                    <td><img src="../../../images/kmjrApp/gameArborDay/icon-rank-2.png" width="48"> </td>
+                    <td><img src="../../../images/kmjrApp/gameArborDay/icon-flower.png" class="ar-avatar-table"> </td>
+                    <td>比克大魔王和超级赛亚人大战比克大魔王和超级赛亚人大战</td>
+                    <td>50</td>
+                </tr>
+                <tr>
+                    <td><img src="../../../images/kmjrApp/gameArborDay/icon-rank-3.png" width="48"> </td>
+                    <td><img src="../../../images/kmjrApp/gameArborDay/icon-flower.png" class="ar-avatar-table"> </td>
+                    <td>比克大魔王大战悟空</td>
+                    <td>50</td>
+                </tr>
+                <tr>
+                    <td><span class="text-rank">4</span> </td>
+                    <td><img src="../../../images/kmjrApp/gameArborDay/icon-flower.png" class="ar-avatar-table"> </td>
+                    <td>比克大魔王大战悟空</td>
+                    <td>50</td>
+                </tr>
+                <tr>
+                    <td><span class="text-rank">5</span> </td>
+                    <td><img src="../../../images/kmjrApp/gameArborDay/icon-flower.png" class="ar-avatar-table"> </td>
+                    <td>比克大魔王大战悟空</td>
+                    <td>50</td>
+                </tr>
+                <tr>
+                    <td><span class="text-rank">6</span> </td>
+                    <td><img src="../../../images/kmjrApp/gameArborDay/icon-flower.png" class="ar-avatar-table"> </td>
+                    <td>比克大魔王大战悟空</td>
+                    <td>50</td>
+                </tr>
+                <tr>
+                    <td><span class="text-rank">7</span> </td>
+                    <td><img src="../../../images/kmjrApp/gameArborDay/icon-flower.png" class="ar-avatar-table"> </td>
+                    <td>比克大魔王大战悟空</td>
+                    <td>50</td>
+                </tr>
+                <tr>
+                    <td><span class="text-rank">8</span> </td>
+                    <td><img src="../../../images/kmjrApp/gameArborDay/icon-flower.png" class="ar-avatar-table"> </td>
+                    <td>比克大魔王大战悟空</td>
+                    <td>50</td>
+                </tr>
+                <tr>
+                    <td><span class="text-rank">9</span> </td>
+                    <td><img src="../../../images/kmjrApp/gameArborDay/icon-flower.png" class="ar-avatar-table"> </td>
+                    <td>比克大魔王大战悟空</td>
+                    <td>50</td>
+                </tr>
+                <tr>
+                    <td><span class="text-rank">10</span> </td>
+                    <td><img src="../../../images/kmjrApp/gameArborDay/icon-flower.png" class="ar-avatar-table"> </td>
+                    <td>比克大魔王大战悟空</td>
+                    <td>50</td>
+                </tr>
+                <tr>
+                    <td><span class="text-rank">11</span> </td>
+                    <td><img src="../../../images/kmjrApp/gameArborDay/icon-flower.png" class="ar-avatar-table"> </td>
+                    <td>比克大魔王大战悟空</td>
+                    <td>50</td>
+                </tr>
+                <tr>
+                    <td><span class="text-rank">12</span> </td>
+                    <td><img src="../../../images/kmjrApp/gameArborDay/icon-flower.png" class="ar-avatar-table"> </td>
+                    <td>比克大魔王大战悟空</td>
+                    <td>50</td>
+                </tr>
+                <tr>
+                    <td><span class="text-rank">13</span> </td>
+                    <td><img src="../../../images/kmjrApp/gameArborDay/icon-flower.png" class="ar-avatar-table"> </td>
+                    <td>比克大魔王大战悟空</td>
+                    <td>50</td>
+                </tr>
+                <tr>
+                    <td><span class="text-max">14</span> </td>
+                    <td><img src="../../../images/kmjrApp/gameArborDay/icon-flower.png" class="ar-avatar-table"> </td>
+                    <td>比克大魔王大战悟空</td>
+                    <td>50</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!--二维码-->
+<div class="dialog fadeOut" data-dialog="sqr">
+    <div class="dialog-bg" ></div>
+    <div class="dialog-content dialog-content-inline transparent text-center">
+        <div class="dialog-panel">
+            <img src="../../../images/kmjrApp/gameArborDay/sqr-rraj.png" width="80%" class="img-sqr">
+            <p class="text-min">长按指纹“识别二维码”关注</p>
+        </div>
+        <div class="rule-up text-white" data-btn="hideDialog" data-hide-name="sqr" >
+            ×
+        </div>
+    </div>
+</div>
+
+<!--领取奖励-->
+<div class="dialog fadeOut " data-dialog="gift">
+    <div class="dialog-bg" data-btn="hideDialog" data-hide-name="gift" ></div>
+    <div class="dialog-content dialog-content-inline transparent text-center ">
+        <div class="dialog-panel dialog-yellow">
+            <div class="dialog-panel-header text-stand">
+                领取奖励
+            </div>
+            <div class="dialog-panel-body">
+                <div class="panel-items">
+                    <input placeholder="请输入手机号" class="panel-ipt" type="tel">
+                </div>
+                <div class="">
+                    <a href="javascript:;" class="dialog-btn panel-ipt-btn yellow-line"  data-btn="showDialog" data-show-name="gift-share">分享领取</a>
+                    <a href="javascript:;" class="dialog-btn panel-ipt-btn gray-line"  data-btn="showDialog" data-show-name="gift-share">分享领取</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--分享到朋友圈-->
+<div class="dialog fadeOut" data-dialog="gift-share">
+    <div class="dialog-bg"></div>
+    <div class="dialog-content transparent text-center text-white">
+        <img src="../../../images/kmjrApp/gameArborDay/icon-open-friend-big.png" class="img-share-friend">
+        <div class="rule-up text-white" data-btn="hideDialog" data-hide-name="gift-share" >
+            ×
+        </div>
+    </div>
+</div>
+
+<!--分享下载-->
+<div class="dialog fadeOut" data-dialog="downApp">
+    <div class="dialog-bg"></div>
+    <div class="dialog-content dialog-content-down transparent text-white">
+        <div class="down-content">
+            <div class="close" data-btn="hideDialog" data-hide-name="downApp">×</div>
+            <img src="../../../images/kmjrApp/gameArborDay/ar-down_01.png">
+            <img src="../../../images/kmjrApp/gameArborDay/ar-down_02.png">
+            <img src="../../../images/kmjrApp/gameArborDay/ar-down_03.png">
+            <img src="../../../images/kmjrApp/gameArborDay/ar-down_04.png">
+            <img src="../../../images/kmjrApp/gameArborDay/ar-down_05.png">
+            <img src="../../../images/kmjrApp/gameArborDay/ar-down_06.png">
+            <img src="../../../images/kmjrApp/gameArborDay/ar-down_07.png">
+            <a href="#"><img src="../../../images/kmjrApp/gameArborDay/ar-down_08.png" class="btn-down"></a>
+        </div>
+    </div>
+</div>
+
+<!--活动规则-->
+<div class="dialog fadeOut" data-dialog="rule">
+    <div class="dialog-bg"></div>
+    <div class="dialog-content transparent text-white">
+        <div class="rule-content">
+            <div class="rule-tit text-center"><span class="rule-tit-txt">活动时间</span></div>
+            <p>
+                2016年3月9日-2016年3月12日
+            </p>
+            <div class="rule-tit text-center"><span class="rule-tit-txt">活动奖励</span></div>
+            <div class="rule-table">
+                <table cellpadding="0" cellspacing="0" width="100%">
+                    <tr>
+                        <td>20-24分</td>
+                        <td>得888元理财红包</td>
+                    </tr>
+                    <tr>
+                        <td>25-29分</td>
+                        <td>得1288元理财红包</td>
+                    </tr>
+                    <tr>
+                        <td>30-34分</td>
+                        <td>得1888元理财红包</td>
+                    </tr>
+                    <tr>
+                        <td>=35分</td>
+                        <td>得5888元理财红包</td>
+                    </tr>
+                    <tr>
+                        <td>&gt;35分部分</td>
+                        <td>每增加1分增加100元理财红包</td>
+                    </tr>
+                </table>
+                <div class="text-tips lineheight-1_5 padding-bottom-1em">(理财红包不累计，共计息5天)</div>
+            </div>
+
+            <div class="rule-tit text-center"><span class="rule-tit-txt">活动时间</span></div>
+            <p class="lineheight-1_5">
+                1.根据提示种下摇钱树，如将树苗放入错误
+                的坑洞中则游戏结束；
+            </p>
+            <p class="lineheight-1_5">
+                2.游戏时间共10秒，每成功植树一棵计1分，
+                达到20分则挑战成功，成功后您可以选择继
+                续刷分或提交成绩<span class="text-tips">（仅限提交1次）</span>；
+            </p>
+            <p class="lineheight-1_5">
+                3.以用户提交成绩时所获得的最高分发放理
+                财红包，输入手机号分享领取奖励；
+            </p>
+            <p class="lineheight-1_5">
+                4.获取奖励后用户需<span class="text-tips">登入“人人爱家金融”
+                App</span>，理财红包即可转入您的账户开始计息。
+                每位用户限领一次，以身份证号为准。
+            </p>
+
+            <div class="rule-copyright lineheight-1_5">
+                客服热线：400-667-0571
+                <br>
+                本活动最终解释权归人人爱家金融所有
+            </div>
+        </div>
+        <div class="rule-up text-white" data-btn="hideDialog" data-hide-name="rule" >
+            ×
+        </div>
+    </div>
+</div>
+
+<audio id="player-music-bg"  loop="loop"  autoplay>
+    <!--<source src="/i/song.ogg" type="audio/ogg">-->
+    <source src="../../../images/kmjrApp/gameArborDay/music-bg.mp3" type="audio/mpeg">
+    您的浏览器不支持音乐播放
+</audio>
+<audio id="player-music-select" >
+    <source src="../../../images/kmjrApp/gameArborDay/music-select.mp3" type="audio/mpeg">
+    您的浏览器不支持音乐播放
+</audio>
+
+<script>
+    require(['jquery','../../../javascripts/webApp/kmjr.app.game.arborday.js'],function($,ar){
+        //TODO 游戏加载配置
+        ar.config.elemNum= 100;
+        ar.insertElem();
+
+        //通用隐藏显示事件
+        $('[data-btn="showDialog"]').on('click',function(){
+            $('[data-dialog="'+$(this).attr('data-show-name')+'"]').css({'display':'block'});
+        });
+
+        $('[data-btn="hideDialog"]').on('click',function(){
+            $('[data-dialog="'+$(this).attr('data-hide-name')+'"]').css({'display':'none'});
+        });
+    });
+
+</script>
+</body>
+</html>
